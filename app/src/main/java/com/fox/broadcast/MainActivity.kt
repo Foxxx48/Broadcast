@@ -7,19 +7,21 @@ import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
     private val receiver = MyReceiver()
-    private val receiver2 = MyReceiver()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val intentFilter = IntentFilter(Intent.ACTION_AIRPLANE_MODE_CHANGED)
-        val intentFilter2 = IntentFilter(Intent.ACTION_BATTERY_LOW)
-        registerReceiver(receiver2, intentFilter2)
+
+        val intentFilter = IntentFilter().apply {
+            addAction(Intent.ACTION_BATTERY_LOW)
+            addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED)
+            addAction(Intent.ACTION_BATTERY_OKAY)
+        }
         registerReceiver(receiver, intentFilter)
     }
 
     override fun onDestroy() {
         super.onDestroy()
         unregisterReceiver(receiver)
-        unregisterReceiver(receiver2)
     }
 }
