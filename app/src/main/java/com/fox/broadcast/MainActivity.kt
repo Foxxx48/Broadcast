@@ -1,19 +1,31 @@
 package com.fox.broadcast
 
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
-import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.fox.broadcast.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
-    private var _binding:ActivityMainBinding? = null
+
+    private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding ?: throw RuntimeException("ActivityMainBinding = null")
 
     private val receiver = MyReceiver()
-    var count = 0
+    private var count = 0
+
+    val receiver2 = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent?) {
+            if (intent?.action == MyService.LOADED) {
+                val loaded = intent.getIntExtra(MyService.EXTRA_KEY, 100500)
+                binding.progressBar.progress = loaded
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +47,9 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
+        val intentFilter2 = IntentFilter(MyService.LOADED)
+        registerReceiver(receiver2, intentFilter2)
+
 
         val intentFilter = IntentFilter().apply {
             addAction(Intent.ACTION_BATTERY_LOW)
@@ -50,5 +65,7 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
         _binding = null
         unregisterReceiver(receiver)
+        unregisterReceiver(receiver2)
+
     }
 }

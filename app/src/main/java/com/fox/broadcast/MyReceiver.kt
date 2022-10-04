@@ -26,7 +26,7 @@ class MyReceiver : BroadcastReceiver(){
            }
            MyService.LOADED -> {
                val loaded = intent.getIntExtra(MyService.EXTRA_KEY, 100500)
-               Toast.makeText(context, "Data loaded for $loaded %", Toast.LENGTH_SHORT).show()
+               Toast.makeText(context, "Loaded $loaded %", Toast.LENGTH_SHORT).show()
            }
        }
 
