@@ -6,6 +6,7 @@ import android.content.Intent
 import android.widget.Toast
 
 class MyReceiver : BroadcastReceiver(){
+
     override fun onReceive(context: Context, intent: Intent?) {
        when (intent?.action) {
            Intent.ACTION_AIRPLANE_MODE_CHANGED -> {
@@ -22,6 +23,10 @@ class MyReceiver : BroadcastReceiver(){
            ACTION_CLICK -> {
                val count = intent.getIntExtra(EXTRA_KEY, 100500)
                Toast.makeText(context, "Button clicked $count times", Toast.LENGTH_SHORT).show()
+           }
+           MyService.LOADED -> {
+               val loaded = intent.getIntExtra(MyService.EXTRA_KEY, 100500)
+               Toast.makeText(context, "Data loaded for $loaded %", Toast.LENGTH_SHORT).show()
            }
        }
 
